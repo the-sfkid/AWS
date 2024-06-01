@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Get a session token
+TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
+
+# Retrieve the details
+AMI_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/ami-id)
+INSTANCE_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/instance-id)
+INSTANCE_TYPE=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/instance-type)
+
+# Log the details
+echo "AMI ID: $AMI_ID" >> /root/ec2-details.txt
+echo "Instance ID: $INSTANCE_ID" >> /root/ec2-details.txt
+echo "Instance Type: $INSTANCE_TYPE" >> /root/ec2-details.txt
